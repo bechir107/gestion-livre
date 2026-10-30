@@ -1,0 +1,86 @@
+
+<div class="container">
+  <h1>Gestion des livres</h1>
+
+  <form #bookForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="title">Titre du livre</label>
+      <input
+        id="title"
+        type="text"
+        name="title"
+        [(ngModel)]="book.title"
+        required
+        placeholder="Ex : Le Petit Prince">
+    </div>
+
+    <div class="form-group">
+      <label for="author">Auteur</label>
+      <input
+        id="author"
+        type="text"
+        name="author"
+        [(ngModel)]="book.author"
+        required
+        placeholder="Nom de l'auteur">
+    </div>
+
+    <div class="form-group">
+      <label for="year">Année de publication</label>
+      <input
+        id="year"
+        type="number"
+        name="year"
+        [(ngModel)]="book.year"
+        min="1"
+        required>
+    </div>
+
+    <button type="submit" [disabled]="bookForm.invalid">
+      {{ editingId === null ? 'Ajouter le livre' : 'Modifier le livre' }}
+    </button>
+
+    <button type="button" (click)="resetForm()">
+      Annuler
+    </button>
+  </form>
+
+  <p *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </p>
+
+  <h2>Liste des livres</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Titre</th>
+        <th>Auteur</th>
+        <th>Année</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of books">
+        <td>{{ item.id }}</td>
+        <td>{{ item.title }}</td>
+        <td>{{ item.author }}</td>
+        <td>{{ item.year }}</td>
+        <td>
+          <button type="button" (click)="editBook(item)">
+            Modifier
+          </button>
+          <button type="button" (click)="deleteBook(item.id!)">
+            Supprimer
+          </button>
+        </td>
+      </tr>
+
+      <tr *ngIf="books.length === 0">
+        <td colspan="5">Aucun livre disponible.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
